@@ -9,14 +9,13 @@
         </RouterLink>
       </li>
     </ul>
+    <div v-if="chapters.length === 0">Loading...</div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { ref, onMounted } from 'vue'
-
-// https://api.consumet.org/manga/mangadex/info/{route.params.id}
 
 const route = useRoute()
 console.log(route.params.id)
@@ -24,11 +23,13 @@ console.log(route.params.id)
 const chapters = ref<any>([])
 
 const getChapters = async () => {
-  const response = await fetch(`https://api.consumet.org/manga/mangadex/info/${route.params.id}`)
+  const response = await fetch(
+    `https://api.consumet.org/manga/${import.meta.env.VITE_MANGA_SOURCE}/info/${route.params.id}`
+  )
   const data = await response.json()
   chapters.value = data?.chapters
   console.log('CHAPTERS :')
-  console.log(data?.chapters)
+  console.log(data?.chapters.reverse())
 }
 
 onMounted(() => {

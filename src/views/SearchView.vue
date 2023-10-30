@@ -19,7 +19,9 @@ const query = ref<string>('')
 const mangas = ref<any>([])
 
 const search = async () => {
-  const response = await fetch(`https://api.consumet.org/manga/mangadex/${query.value}`)
+  const response = await fetch(
+    `https://api.consumet.org/manga/${import.meta.env.VITE_MANGA_SOURCE}/${query.value}`
+  )
   const data = await response.json()
   mangas.value = data.results
   console.log(data)
